@@ -23,7 +23,7 @@ export function BlogCard({ imageUrl, title, category, content, href }: Props) {
           <h3 className="text-lg">{title}</h3>
         </div>
         <div className="flex flex-col items-start flex-1 justify-between gap-6">
-          <p className="text-fg-secondary">{content}</p>
+          <p className="text-fg-secondary font-medium">{content}</p>
           <a
             href={href}
             target="_blank"
