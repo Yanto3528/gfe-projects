@@ -17,7 +17,7 @@ export function BlogCard({ imageUrl, title, category, content, href }: Props) {
         alt={`${title} thumbnail`}
         className="w-full h-[288px] object-cover"
       />
-      <div className="px-4 py-6 flex flex-col gap-3">
+      <div className="px-4 py-6 space-y-3">
         <div className="flex flex-col items-start gap-2">
           <Badge>{category}</Badge>
           <h3 className="text-lg">{title}</h3>
