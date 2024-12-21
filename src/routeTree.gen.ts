@@ -17,6 +17,7 @@ import { Route as rootRoute } from './routes/__root'
 // Create Virtual Routes
 
 const TestimonialCardLazyImport = createFileRoute('/testimonial-card')()
+const BlogCardLazyImport = createFileRoute('/blog-card')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
@@ -28,6 +29,12 @@ const TestimonialCardLazyRoute = TestimonialCardLazyImport.update({
 } as any).lazy(() =>
   import('./routes/testimonial-card.lazy').then((d) => d.Route),
 )
+
+const BlogCardLazyRoute = BlogCardLazyImport.update({
+  id: '/blog-card',
+  path: '/blog-card',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/blog-card.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/blog-card': {
+      id: '/blog-card'
+      path: '/blog-card'
+      fullPath: '/blog-card'
+      preLoaderRoute: typeof BlogCardLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/testimonial-card': {
       id: '/testimonial-card'
       path: '/testimonial-card'
@@ -60,36 +74,41 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '/blog-card': typeof BlogCardLazyRoute
   '/testimonial-card': typeof TestimonialCardLazyRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '/blog-card': typeof BlogCardLazyRoute
   '/testimonial-card': typeof TestimonialCardLazyRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/blog-card': typeof BlogCardLazyRoute
   '/testimonial-card': typeof TestimonialCardLazyRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/testimonial-card'
+  fullPaths: '/' | '/blog-card' | '/testimonial-card'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/testimonial-card'
-  id: '__root__' | '/' | '/testimonial-card'
+  to: '/' | '/blog-card' | '/testimonial-card'
+  id: '__root__' | '/' | '/blog-card' | '/testimonial-card'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  BlogCardLazyRoute: typeof BlogCardLazyRoute
   TestimonialCardLazyRoute: typeof TestimonialCardLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  BlogCardLazyRoute: BlogCardLazyRoute,
   TestimonialCardLazyRoute: TestimonialCardLazyRoute,
 }
 
@@ -104,11 +123,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/blog-card",
         "/testimonial-card"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/blog-card": {
+      "filePath": "blog-card.lazy.tsx"
     },
     "/testimonial-card": {
       "filePath": "testimonial-card.lazy.tsx"
